@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Try on dresses live through your camera - upload a photo and see it fitted to your body in real time." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Virtual Dress Try-On</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-header__brand">
+        <span class="app-header__mark" aria-hidden="true"></span>
+        <h1>Virtual Dress Try-On</h1>
+      </div>
+      <p class="instructions">Upload a dress image to try it on - then step in front of your camera.</p>
+    </header>
+
+    <div id="camera-error-banner" class="banner banner--error" role="alert" hidden></div>
+    <div id="upload-error-banner" class="banner banner--error" role="alert" hidden></div>
+    <div id="pose-warning-banner" class="banner banner--warning" role="alert" hidden>
+      Pose tracking couldn't load, so auto-fit is off for now. You can still drag and resize the garment manually.
+    </div>
+
+    <main class="main-layout">
+      <div class="camera-stage">
+        <div class="camera-stage__frame">
+          <video id="camera-video" playsinline muted style="display:none"></video>
+          <canvas id="camera-canvas" class="camera-canvas"></canvas>
+          <span class="viewfinder-corner viewfinder-corner--tl" aria-hidden="true"></span>
+          <span class="viewfinder-corner viewfinder-corner--tr" aria-hidden="true"></span>
+          <span class="viewfinder-corner viewfinder-corner--bl" aria-hidden="true"></span>
+          <span class="viewfinder-corner viewfinder-corner--br" aria-hidden="true"></span>
+          <div id="stage-spinner" class="spinner spinner--overlay">
+            <span class="spinner__ring" aria-hidden="true"></span>
+            <span id="stage-spinner-label" class="spinner__label">Starting camera…</span>
+          </div>
+        </div>
+        <p id="drag-hint" class="drag-hint" hidden>Drag on the video to reposition · use the size slider to resize</p>
+      </div>
+
+      <aside class="side-panel">
+        <section class="panel">
+          <h2 class="panel__title">Your dresses</h2>
+          <div id="dropzone" class="dropzone" role="button" tabindex="0">
+            <div id="dropzone-default">
+              <span class="dropzone__title">Upload a dress photo</span><br />
+              <span class="dropzone__hint">Click to browse, or drag a JPG here</span>
+            </div>
+            <div id="upload-spinner" class="spinner spinner--inline" hidden>
+              <span class="spinner__ring" aria-hidden="true"></span>
+              <span class="spinner__label">Cutting out the background…</span>
+            </div>
+            <input id="file-input" type="file" accept="image/jpeg,image/jpg,image/png" multiple hidden />
+          </div>
+          <div id="garment-strip" class="garment-strip"></div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel__title">Fit controls</h2>
+          <label class="control-row">
+            <span>Size</span>
+            <input id="size-slider" type="range" min="0.6" max="1.4" step="0.01" value="1" disabled />
+          </label>
+          <label class="control-row control-row--checkbox">
+            <input id="flip-checkbox" type="checkbox" disabled />
+            <span>Flip garment horizontally</span>
+          </label>
+          <div class="control-buttons">
+            <button id="reset-btn" type="button" class="btn btn--secondary" disabled>Reset fit</button>
+            <button id="snapshot-btn" type="button" class="btn btn--primary" disabled>Save snapshot</button>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
